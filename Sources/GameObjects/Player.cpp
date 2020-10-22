@@ -3,6 +3,7 @@
 //
 
 #include "Player.h"
+#include "Hurdle.h"
 
 
 void Player::keyPressEvent(QKeyEvent *event) {
@@ -22,4 +23,9 @@ void Player::keyPressEvent(QKeyEvent *event) {
         if(pos().y() > 0)
             setPos(x(),y()-20);
     }
+}
+
+void Player::spawn() {
+    Hurdle * hurdle = new Hurdle();
+    scene()->addItem(hurdle);
 }

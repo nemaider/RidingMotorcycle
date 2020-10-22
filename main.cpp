@@ -1,7 +1,10 @@
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QTimer>
+
 #include <Sources/GameObjects/Player.h>
+#include <Sources/GameObjects/Hurdle.h>
 
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);
@@ -26,6 +29,9 @@ int main(int argc, char *argv[]){
     view->setFixedSize(800,600);
     player1->setPos(view->width()/2, view->height() - player1->rect().height());
 
+    QTimer *timer = new QTimer();
+    QObject::connect(timer,SIGNAL(timeout()),player1,SLOT(spawn()));
+    timer->start(2000);
 
     return a.exec();
 }
