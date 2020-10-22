@@ -1,2 +1,2 @@
 # RidingMotorcycle
-project for university
+Game Engine in Qt
