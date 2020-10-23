@@ -2,8 +2,13 @@
 // Created by exort on 22.10.2020.
 //
 
-#include "Hurdle.h"
+#include "Sources/GameObjects/Hurdle.h"
+#include "Game.h"
+#include <Sources/GameObjects/Player.h>
 
+#include <QList>
+
+extern Game * game;
 
 Hurdle::Hurdle(): QObject(), QGraphicsRectItem(){
     int random = (rand() % 300)+200;
@@ -18,8 +23,24 @@ Hurdle::Hurdle(): QObject(), QGraphicsRectItem(){
 }
 
 void Hurdle::move() {
+    QList<QGraphicsItem *> colliding_items = collidingItems();
+    int n = colliding_items.size();
+    for (int i=0; i < n; ++i){
+        if (typeid(*(colliding_items[i])) == typeid(Player)){
+            scene()->removeItem(this);
+            delete this;
+            game->health->decrease();
+            if(game->health->getHealth() == 0)
+                exit(-1);
+            else
+                return;
+        }
+    }
+
+
     setPos(x(),y()+5);
-    if(pos().y() + rect().height() < 0){
+    if(pos().y() > 600){
+        game->score->increase();
         scene()->removeItem(this);
         delete this;
     }
