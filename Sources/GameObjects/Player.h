@@ -16,7 +16,8 @@ public:
     Player();
     void keyPressEvent(QKeyEvent * event);
 public slots:
-    void spawn();
+    void spawnHurdle();
+    void spawnHeart();
 };
 
 

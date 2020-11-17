@@ -17,6 +17,7 @@
 #include <Sources/GameObjects/Score.h>
 #include <Sources/GameObjects/Hurdle.h>
 #include <Sources/GameObjects/Health.h>
+#include <Sources/GameObjects/Heart.h>
 
 class Game: public QGraphicsView{
 public:

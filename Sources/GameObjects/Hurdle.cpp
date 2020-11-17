@@ -4,15 +4,15 @@
 
 #include "Sources/GameObjects/Hurdle.h"
 #include "Game.h"
-#include <Sources/GameObjects/Player.h>
+#include "Sources/GameObjects/Player.h"
 
-#include <QList>
+
 
 extern Game * game;
 
 Hurdle::Hurdle(): QObject(), QGraphicsPixmapItem(){
-    int random = (rand() % 300)+200;
-    setPos(random,0);
+    int random = (rand() % 400)+200;
+    setPos(random,80);
 
 
     setPixmap(QPixmap("../Sources/Pictures/hole.png"));
@@ -21,6 +21,16 @@ Hurdle::Hurdle(): QObject(), QGraphicsPixmapItem(){
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 
     timer->start(50);
+
+
+    if(game->score->getScore() >= 10) {
+        timer->start(35);
+    } else if (game->score->getScore() >= 25) {
+        timer->start(25);
+    } else if (game->score->getScore() >= 50) {
+        timer->start(20);
+    }
+
 }
 
 void Hurdle::move() {
@@ -31,10 +41,11 @@ void Hurdle::move() {
             scene()->removeItem(this);
             delete this;
             game->health->decrease();
-            if(game->health->getHealth() == 0)
-                exit(-1);
-            else
-                return;
+            if (game->health->getHealth() == 0){
+                game->scene->clear();
+                game->setBackgroundBrush(QImage("../Sources/Pictures/gameover.png"));
+            }
+            return;
         }
     }
 

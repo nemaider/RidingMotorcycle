@@ -4,7 +4,6 @@
 
 #include "Sources/GameObjects/Game.h"
 
-#include <QMediaPlayer>
 
 
 Game::Game(QWidget * parent){
@@ -24,23 +23,29 @@ Game::Game(QWidget * parent){
     scene->addItem(player);
 
     score = new Score();
+    score->setPos(score->x()+600, score->y()+9);
     scene->addItem(score);
 
     health = new Health();
-    health->setPos(health->x(),health->y()+25);
+    health->setPos(health->x()+380, health->y()+9);
     scene->addItem(health);
 
 
-    QTimer * timer = new QTimer();
-    QObject::connect(timer,SIGNAL(timeout()),player,SLOT(spawn()));
-    timer->start(2000);
+
+    QTimer * timerHurdle = new QTimer();
+    QObject::connect(timerHurdle,SIGNAL(timeout()),player,SLOT(spawnHurdle()));
+    timerHurdle->start(2000);
+
+    QTimer * timerHeart = new QTimer();
+    QObject::connect(timerHeart,SIGNAL(timeout()),player,SLOT(spawnHeart()));
+    timerHeart->start(10000);
+
+
+
+
+
 
     show();
-
-//    QMediaPlayer * bgMusic = new QMediaPlayer();
-//    connect(bgMusic, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
-//    bgMusic->setMedia(QUrl::fromLocalFile("../Source/Sounds/battle.ogg"));
-//    bgMusic->play();
 
 
 

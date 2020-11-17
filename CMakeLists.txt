@@ -22,7 +22,7 @@ find_package(Qt5MultimediaQuick REQUIRED)
 find_package(Qt5MultimediaWidgets REQUIRED)
 
 add_executable(RidingMotorcycle
-  main.cpp Sources/GameObjects/Player.cpp Sources/GameObjects/Player.h Sources/GameObjects/Hurdle.h Sources/GameObjects/Hurdle.cpp Sources/GameObjects/Score.cpp Sources/GameObjects/Score.h Sources/GameObjects/Game.cpp Sources/GameObjects/Game.h Sources/GameObjects/Health.cpp Sources/GameObjects/Health.h)
+  main.cpp Sources/GameObjects/Player.cpp Sources/GameObjects/Player.h Sources/GameObjects/Hurdle.h Sources/GameObjects/Hurdle.cpp Sources/GameObjects/Score.cpp Sources/GameObjects/Score.h Sources/GameObjects/Game.cpp Sources/GameObjects/Game.h Sources/GameObjects/Health.cpp Sources/GameObjects/Health.h Sources/GameObjects/Heart.cpp Sources/GameObjects/Heart.h)
 
 
 target_link_libraries(RidingMotorcycle Qt5::Core)
