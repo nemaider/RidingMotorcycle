@@ -5,14 +5,14 @@
 #ifndef RIDINGMOTORCYCLE_HURDLE_H
 #define RIDINGMOTORCYCLE_HURDLE_H
 
-#include <QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 #include <QObject>
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QList>
 #include <stdlib.h>
 
-class Hurdle: public QObject, public QGraphicsRectItem{
+class Hurdle: public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 public:
     Hurdle();

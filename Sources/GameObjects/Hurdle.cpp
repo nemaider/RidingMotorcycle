@@ -10,11 +10,12 @@
 
 extern Game * game;
 
-Hurdle::Hurdle(): QObject(), QGraphicsRectItem(){
+Hurdle::Hurdle(): QObject(), QGraphicsPixmapItem(){
     int random = (rand() % 300)+200;
     setPos(random,0);
 
-    setRect(0,0,50,50);
+
+    setPixmap(QPixmap("../Sources/Pictures/hole.png"));
 
     QTimer * timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));

@@ -4,10 +4,13 @@
 
 #include "Sources/GameObjects/Game.h"
 
+#include <QMediaPlayer>
+
 
 Game::Game(QWidget * parent){
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,800,600);
+    setBackgroundBrush(QImage("../Sources/Pictures/background.png"));
 
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -15,8 +18,6 @@ Game::Game(QWidget * parent){
     setFixedSize(800,600);
 
     player = new Player();
-    player->setRect(0,0,100,100);
-    player->setPos(scene->width()/2, scene->height() - player->rect().height());
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
 
@@ -35,4 +36,12 @@ Game::Game(QWidget * parent){
     timer->start(2000);
 
     show();
+
+//    QMediaPlayer * bgMusic = new QMediaPlayer();
+//    connect(bgMusic, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+//    bgMusic->setMedia(QUrl::fromLocalFile("../Source/Sounds/battle.ogg"));
+//    bgMusic->play();
+
+
+
 };

@@ -5,13 +5,20 @@
 #include "Player.h"
 #include "Hurdle.h"
 
+Player::Player(): QObject(), QGraphicsPixmapItem(){
+
+    setPos(400,500);
+    setPixmap(QPixmap("../Sources/Pictures/motorcycle.png"));
+
+
+}
 
 void Player::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Left){
         if(pos().x() > 200)
             setPos(x()-10,y());
     } else if (event->key() == Qt::Key_Right){
-        if(pos().x() < 500)
+        if(pos().x() < 600)
             setPos(x()+10,y());
     } else if (event->key() == Qt::Key_Up){
         if(pos().y() > 0)

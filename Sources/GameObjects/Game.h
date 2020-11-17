@@ -11,6 +11,8 @@
 #include <QTimer>
 #include <QGraphicsTextItem>
 #include <QFont>
+#include <QImage>
+#include <QBrush>
 #include <Sources/GameObjects/Player.h>
 #include <Sources/GameObjects/Score.h>
 #include <Sources/GameObjects/Hurdle.h>

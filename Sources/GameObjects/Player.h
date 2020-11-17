@@ -5,14 +5,15 @@
 #ifndef RIDINGMOTORCYCLE_PLAYER_H
 #define RIDINGMOTORCYCLE_PLAYER_H
 
-#include <QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 #include <QKeyEvent>
 #include <QObject>
 
 
-class Player: public QObject, public QGraphicsRectItem {
+class Player: public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 public:
+    Player();
     void keyPressEvent(QKeyEvent * event);
 public slots:
     void spawn();
