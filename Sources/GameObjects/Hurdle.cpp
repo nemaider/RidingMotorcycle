@@ -40,8 +40,16 @@ void Hurdle::move() {
         if (typeid(*(colliding_items[i])) == typeid(Player)){
             scene()->removeItem(this);
             delete this;
-            game->health->decrease();
-            if (game->health->getHealth() == 0){
+
+            if (game->score->getScore() > 0 ){
+                int level = game->score->getScore()/10 + 1;
+                for (int j=0; j<level; j++)
+                    game->health->decrease();
+            } else {
+                game->health->decrease();
+            }
+
+            if (game->health->getHealth() <= 0){
                 game->scene->clear();
                 game->setBackgroundBrush(QImage("../Sources/Pictures/gameover.png"));
             }

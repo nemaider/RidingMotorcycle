@@ -35,7 +35,6 @@ void Heart::move() {
         }
     }
 
-
     setPos(x(),y()+5);
     if(pos().y() > 600){
         scene()->removeItem(this);

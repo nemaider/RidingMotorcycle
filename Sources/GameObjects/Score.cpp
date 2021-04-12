@@ -1,9 +1,7 @@
 //
 // Created by exort on 23.10.2020.
 //
-#include <QTimer>
-#include <QGraphicsTextItem>
-#include <QFont>
+
 #include "Score.h"
 
 Score::Score(QGraphicsItem *parent) : QGraphicsTextItem(parent) {

@@ -7,6 +7,9 @@
 
 #include <QGraphicsTextItem>
 #include <QFont>
+#include <QTimer>
+
+
 class Score: public  QGraphicsTextItem{
 public:
     Score(QGraphicsItem * parent =0);

@@ -15,22 +15,23 @@ Player::Player(): QObject(), QGraphicsPixmapItem(){
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Left){
-        if(pos().x() > 200)
+    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A){
+        if(pos().x() > 180)
             setPos(x()-10,y());
-    } else if (event->key() == Qt::Key_Right){
-        if(pos().x() < 600)
+    } else if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D ){
+        if(pos().x() < 620)
             setPos(x()+10,y());
-    } else if (event->key() == Qt::Key_Up){
-        if(pos().y() > 80)
+    } else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W ){
+        if(pos().y() > 0) // 80
             setPos(x(),y()-10);
-    } else if (event->key() == Qt::Key_Down){
+    } else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_S ){
         if(pos().y() < 500)
             setPos(x(),y()+10);
     } else if (event->key() == Qt::Key_Space){
-        if(pos().y() > 80)
+        if(pos().y() > 0) // 80
             setPos(x(),y()-20);
     }
+
 }
 
 void Player::spawnHurdle() {

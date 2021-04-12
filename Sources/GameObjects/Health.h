@@ -6,8 +6,8 @@
 #define RIDINGMOTORCYCLE_HEALTH_H
 
 #include <QGraphicsTextItem>
+#include <QTimer>
 #include <QFont>
-
 class Health: public QGraphicsTextItem{
 public:
     Health(QGraphicsItem * parent =0);

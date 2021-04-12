@@ -4,9 +4,7 @@
 
 #include "Health.h"
 
-#include <QTimer>
-#include <QGraphicsTextItem>
-#include <QFont>
+
 
 
 Health::Health(QGraphicsItem *parent) : QGraphicsTextItem(parent) {
