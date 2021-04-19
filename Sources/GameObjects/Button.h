@@ -12,7 +12,7 @@
 class Button: public QObject, public QGraphicsRectItem{
     Q_OBJECT
 public:
-    Button(QString name, QGraphicsItem* parent=NULL);
+    Button(QString graphInactiveFileName, QString graphActiveFileName,QGraphicsItem* parent=NULL);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -23,6 +23,8 @@ signals:
 
 private:
     QGraphicsTextItem* text;
+    QString foregroundImg;
+    QString backgroundImg;
 };
 
 

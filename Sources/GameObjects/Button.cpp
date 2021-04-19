@@ -6,17 +6,16 @@
 #include <QGraphicsTextItem>
 #include "Button.h"
 
-Button::Button(QString name, QGraphicsItem *parent): QGraphicsRectItem(parent){
-    setRect(0,0,200,50);
-    QBrush brush;
-    brush.setStyle(Qt::SolidPattern);
-    brush.setColor(Qt::darkCyan);
-    setBrush(brush);
+Button::Button(QString graphInactiveFileName, QString graphActiveFileName, QGraphicsItem *parent): QGraphicsRectItem(parent){
 
-    text = new QGraphicsTextItem(name,this);
-    int xPos = rect().width()/2 - text->boundingRect().width()/2;
-    int yPos = rect().height()/2 - text->boundingRect().height()/2;
-    text->setPos(xPos,yPos);
+    this->foregroundImg = graphInactiveFileName;
+    this->backgroundImg = graphActiveFileName;
+
+
+    setRect(0,0,143,54);
+    QBrush brush;
+    brush.setTexture(QPixmap(foregroundImg));
+    setBrush(brush);
 
     setAcceptHoverEvents(true);
 }
@@ -27,15 +26,13 @@ void Button::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void Button::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     QBrush brush;
-    brush.setStyle(Qt::SolidPattern);
-    brush.setColor(Qt::cyan);
+    brush.setTexture(QPixmap(backgroundImg));
     setBrush(brush);
 }
 
 void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
     QBrush brush;
-    brush.setStyle(Qt::SolidPattern);
-    brush.setColor(Qt::darkCyan);
+    brush.setTexture(QPixmap(foregroundImg));
     setBrush(brush);
 }
 

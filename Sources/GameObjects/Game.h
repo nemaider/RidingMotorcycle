@@ -24,7 +24,7 @@ class Game: public QGraphicsView{
 public:
     Game (QWidget * parent=0);
 
-    void displayMainMenu();
+
 
     QGraphicsScene * scene;
     Player * player;
@@ -33,6 +33,9 @@ public:
 
 public slots:
     void start();
+    void displayMainMenu();
+    void showHelp();
+    void showScores();
 };
 
 
