@@ -18,6 +18,9 @@
 #include <Sources/GameObjects/Hurdle.h>
 #include <Sources/GameObjects/Health.h>
 #include <Sources/GameObjects/Heart.h>
+#include <QLabel>
+#include "Button.h"
+#include "TextInformation.h"
 
 class Game: public QGraphicsView{
     Q_OBJECT
@@ -30,6 +33,15 @@ public:
     Player * player;
     Score * score;
     Health * health;
+
+    Button * playButton;
+    Button * scoreButton;
+    Button * helpButton;
+    Button * quitButton;
+    Button * backButton;
+
+    QLabel * parchmentImage;
+    TextInformation * info;
 
 public slots:
     void start();

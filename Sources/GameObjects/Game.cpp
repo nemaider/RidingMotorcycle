@@ -3,12 +3,13 @@
 //
 
 #include "Sources/GameObjects/Game.h"
-#include "Button.h"
 #include <QGraphicsTextItem>
 #include <QLabel>
 
 
 Game::Game(QWidget * parent){
+
+    // scene tools
     scene = new QGraphicsScene();
     scene->setSceneRect(0,0,1030,768);
     setBackgroundBrush(QImage("../Sources/Pictures/Menu/background.png"));
@@ -18,30 +19,26 @@ Game::Game(QWidget * parent){
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(1030,768);
 
-}
 
-void Game::displayMainMenu() {
-
-    scene->clear();
-
-    Button* playButton = new Button(QString("../Sources/Pictures/Menu/start-inactive.png"),
-                                     QString("../Sources/Pictures/Menu/start-active.png"));
+    // buttons and properties
+    playButton = new Button(QString("../Sources/Pictures/Menu/start-inactive.png"),
+                            QString("../Sources/Pictures/Menu/start-active.png"));
     int bxPos = playButton->boundingRect().width()/8 + 3;
     int byPos = 380;
     playButton->setPos(bxPos, byPos);
     connect(playButton,SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(playButton);
 
-    Button* scoresButton = new Button(QString("../Sources/Pictures/Menu/scores-inactive.png"),
-                                    QString("../Sources/Pictures/Menu/scores-active.png"));
-    int sxPos = scoresButton->boundingRect().width()/8 + 3;
+    scoreButton = new Button(QString("../Sources/Pictures/Menu/scores-inactive.png"),
+                             QString("../Sources/Pictures/Menu/scores-active.png"));
+    int sxPos = scoreButton->boundingRect().width()/8 + 3;
     int syPos = 450;
-    scoresButton->setPos(sxPos, syPos);
-    connect(scoresButton,SIGNAL(clicked()), this, SLOT(showScores()));
-    scene->addItem(scoresButton);
+    scoreButton->setPos(sxPos, syPos);
+    connect(scoreButton,SIGNAL(clicked()), this, SLOT(showScores()));
+    scene->addItem(scoreButton);
 
-    Button* helpButton = new Button(QString("../Sources/Pictures/Menu/help-inactive.png"),
-                                    QString("../Sources/Pictures/Menu/help-active.png"));
+    helpButton = new Button(QString("../Sources/Pictures/Menu/help-inactive.png"),
+                            QString("../Sources/Pictures/Menu/help-active.png"));
     int hxPos = helpButton->boundingRect().width()/8 + 3;
     int hyPos = 520;
     helpButton->setPos(hxPos, hyPos);
@@ -49,15 +46,94 @@ void Game::displayMainMenu() {
     scene->addItem(helpButton);
 
 
-    Button* quitButton = new Button(QString("../Sources/Pictures/Menu/quit-inactive.png"),
-                                    QString("../Sources/Pictures/Menu/quit-active.png"));
+    quitButton = new Button(QString("../Sources/Pictures/Menu/quit-inactive.png"),
+                            QString("../Sources/Pictures/Menu/quit-active.png"));
     int qxPos = quitButton->boundingRect().width()/8 + 3;
     int qyPos = 610;
     quitButton->setPos(qxPos, qyPos);
     connect(quitButton,SIGNAL(clicked()), this, SLOT(close()));
     scene->addItem(quitButton);
 
+    backButton = new Button(QString("../Sources/Pictures/Menu/back-inactive.png"),
+                            QString("../Sources/Pictures/Menu/back-active.png"));
+    int backxPos = scene->width()/2 - 40;
+    int backyPos = 610;
+    backButton->setPos(backxPos, backyPos);
+    connect(backButton,SIGNAL(clicked()), this, SLOT(displayMainMenu()));
+    scene->addItem(backButton);
+
+    // text and parchment image
+
+    parchmentImage = new QLabel();
+    QPixmap img("../Sources/Pictures/Menu/paper.png");
+    parchmentImage->setPixmap(img);
+
+
+    double x = img.width();
+    double y = img.height();
+    parchmentImage->setGeometry(300,250,x,y);
+    scene->addWidget(parchmentImage);
+
+    info = new TextInformation();
+    info->setPos(300,270);
+    scene->addItem(info);
+
 }
+
+void Game::displayMainMenu() {
+
+
+    scene->removeItem(backButton);
+    scene->removeItem(info);
+    parchmentImage->setHidden(true);
+
+
+    playButton->setEnabled(true);
+    scoreButton->setEnabled(true);
+    helpButton->setEnabled(true);
+    quitButton->setEnabled(true);
+
+
+}
+
+
+
+void Game::showHelp() {
+
+    playButton->setEnabled(false);
+    scoreButton->setEnabled(false);
+    helpButton->setEnabled(false);
+    quitButton->setEnabled(false);
+
+
+    info->setText("\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n");
+
+
+    parchmentImage->setVisible(true);
+    scene->addItem(info);
+    scene->addItem(backButton);
+
+
+}
+
+void Game::showScores() {
+
+
+
+    playButton->setEnabled(false);
+    scoreButton->setEnabled(false);
+    helpButton->setEnabled(false);
+    quitButton->setEnabled(false);
+
+
+    info->setText("SCORE SCORE SCORE");
+
+    parchmentImage->setVisible(true);
+    scene->addItem(info);
+    scene->addItem(backButton);
+
+}
+
 
 void Game::start() {
     scene->clear();
@@ -88,44 +164,4 @@ void Game::start() {
     auto * timerHeart = new QTimer();
     QObject::connect(timerHeart,SIGNAL(timeout()),player,SLOT(spawnHeart()));
     timerHeart->start(10000);
-}
-
-
-void Game::showHelp() {
-
-
-    QLabel *mylabel = new QLabel();
-    QPixmap img("../Sources/Pictures/Menu/paper.png");
-    mylabel->setPixmap(img);
-
-
-    double x = img.width();
-    double y = img.height();
-    mylabel->setGeometry(300,250,x,y);
-    scene->addWidget(mylabel);
-
-
-
-    Button* backButton = new Button(QString("../Sources/Pictures/Menu/quit-inactive.png"),
-                                    QString("../Sources/Pictures/Menu/quit-active.png"));
-    int qxPos = scene->width()/2 - 40;
-    int qyPos = 610;
-    backButton->setPos(qxPos, qyPos);
-    connect(backButton,SIGNAL(clicked()), this, SLOT(displayMainMenu()));
-    scene->addItem(backButton);
-
-}
-
-void Game::showScores() {
-
-
-
-    Button* backButton = new Button(QString("../Sources/Pictures/Menu/quit-inactive.png"),
-                                    QString("../Sources/Pictures/Menu/quit-active.png"));
-    int qxPos = scene->width()/2 - backButton->boundingRect().width();
-    int qyPos = 610;
-    backButton->setPos(qxPos, qyPos);
-    connect(backButton,SIGNAL(clicked()), this, SLOT(displayMainMenu()));
-    scene->addItem(backButton);
-
 }
