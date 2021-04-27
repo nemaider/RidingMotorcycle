@@ -48,6 +48,9 @@ public slots:
     void displayMainMenu();
     void showHelp();
     void showScores();
+
+public:
+    void counting(unsigned long);
 };
 
 

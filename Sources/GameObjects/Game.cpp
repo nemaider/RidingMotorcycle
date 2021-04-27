@@ -5,6 +5,10 @@
 #include "Sources/GameObjects/Game.h"
 #include <QGraphicsTextItem>
 #include <QLabel>
+#include <QCoreApplication>
+#include <QEventLoop>
+#include <QThread>
+#include <QTime>
 
 
 Game::Game(QWidget * parent){
@@ -75,7 +79,7 @@ Game::Game(QWidget * parent){
     scene->addWidget(parchmentImage);
 
     info = new TextInformation();
-    info->setPos(300,270);
+    info->setPosition(300,270);
     scene->addItem(info);
 
 }
@@ -85,6 +89,7 @@ void Game::displayMainMenu() {
 
     scene->removeItem(backButton);
     scene->removeItem(info);
+    info->setProperties(Qt::black,"arial",16,300,270);
     parchmentImage->setHidden(true);
 
 
@@ -106,7 +111,8 @@ void Game::showHelp() {
     quitButton->setEnabled(false);
 
 
-    info->setText("\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n");
+    info->setText("\n\tHelp Information\n\nUse WSAD keys or arrow \nto move your motorcycle\nAvoid the hurdles \n"
+                  "to get score\nPick hearts for earn\nmore health points.\n\n\n\tEnjoy the game!");
 
 
     parchmentImage->setVisible(true);
@@ -126,14 +132,35 @@ void Game::showScores() {
     quitButton->setEnabled(false);
 
 
-    info->setText("SCORE SCORE SCORE");
+    info->setText("\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n");
 
     parchmentImage->setVisible(true);
     scene->addItem(info);
     scene->addItem(backButton);
 
+
 }
 
+void Game::counting(unsigned long msecs)
+{
+    QTime dieTime;
+    info->setProperties(Qt::black,"arial",36,400,180);
+
+    for(int i=3; i>=0; i--){
+        if(i==0) { // set right text
+            info->setText("START!!!");
+            info->setPosition(340,180);
+        } else
+            info->setText(QString::number(i));
+
+        scene->addItem(info); // show text
+
+        dieTime= QTime::currentTime().addMSecs(msecs); // calculate how long app may be delayed
+        while (QTime::currentTime() < dieTime)
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        scene->removeItem(info); // remove text
+    }
+}
 
 void Game::start() {
     scene->clear();
@@ -155,7 +182,7 @@ void Game::start() {
     health->setPos(health->x()+380, health->y()+9);
     scene->addItem(health);
 
-
+    counting(1000);
 
     auto * timerHurdle = new QTimer();
     QObject::connect(timerHurdle,SIGNAL(timeout()),player,SLOT(spawnHurdle()));
