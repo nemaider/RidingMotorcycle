@@ -6,7 +6,6 @@
 #include <QGraphicsTextItem>
 #include <QLabel>
 #include <QCoreApplication>
-#include <QEventLoop>
 #include <QThread>
 #include <QTime>
 
@@ -81,7 +80,10 @@ Game::Game(QWidget * parent){
     info = new TextInformation();
     info->setPosition(300,270);
     scene->addItem(info);
-
+    // game objects
+    health = new Health();
+    player = new Player();
+    score = new Score();
 }
 
 void Game::displayMainMenu() {
@@ -162,23 +164,42 @@ void Game::counting(unsigned long msecs)
     }
 }
 
+void Game::keyPressEvent(QKeyEvent* event){
+    player->keyReact(event);
+}
+
+void Game::keyReleaseEvent(QKeyEvent *event) {
+    player->keyRelease(event);
+}
+
+void Game::mainLoop() {
+    if(health->getHealth() >= 0){
+        player->move();
+    }
+}
+
+
+
+
+
 void Game::start() {
     scene->clear();
+
 
     scene->setSceneRect(0,0,800,600);
     setFixedSize(800,600);
     setBackgroundBrush(QImage("../Sources/Pictures/gameBackground.png"));
-    player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
-
+    player->resetPos();
     scene->addItem(player);
 
-    score = new Score();
+
+    score->resetScore();
     score->setPos(score->x()+600, score->y()+9);
     scene->addItem(score);
 
-    health = new Health();
+    health->resetHealth();
     health->setPos(health->x()+380, health->y()+9);
     scene->addItem(health);
 
@@ -191,4 +212,8 @@ void Game::start() {
     auto * timerHeart = new QTimer();
     QObject::connect(timerHeart,SIGNAL(timeout()),player,SLOT(spawnHeart()));
     timerHeart->start(10000);
+
+    auto mainTimer = new QTimer(this);
+    connect(mainTimer, SIGNAL(timeout()),this, SLOT(mainLoop()));
+    mainTimer->start(0);
 }

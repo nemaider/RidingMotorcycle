@@ -48,9 +48,12 @@ public slots:
     void displayMainMenu();
     void showHelp();
     void showScores();
+    void mainLoop();
 
 public:
     void counting(unsigned long);
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent *event);
 };
 
 

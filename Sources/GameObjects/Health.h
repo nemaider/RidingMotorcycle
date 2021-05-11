@@ -14,6 +14,7 @@ public:
     void decrease();
     void increase();
     int getHealth();
+    void resetHealth();
 private:
     int health;
 };

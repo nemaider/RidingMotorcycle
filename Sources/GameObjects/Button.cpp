@@ -5,6 +5,9 @@
 #include <QBrush>
 #include <QGraphicsTextItem>
 #include "Button.h"
+#include "Game.h"
+
+extern Game * game;
 
 Button::Button(QString graphInactiveFileName, QString graphActiveFileName, QGraphicsItem *parent): QGraphicsRectItem(parent){
 
@@ -36,4 +39,7 @@ void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
     setBrush(brush);
 }
 
+void Button::RestartGame() {
+    game->start();
+}
 

@@ -11,13 +11,17 @@
 #include <QGraphicsScene>
 #include <QList>
 #include <stdlib.h>
+#include "Button.h"
 
 class Hurdle: public QObject, public QGraphicsPixmapItem{
     Q_OBJECT
 public:
     Hurdle();
+
+    Button * playAgain;
 public slots:
     void move();
+//    void RestartGame();
 };
 
 #endif //RIDINGMOTORCYCLE_HURDLE_H

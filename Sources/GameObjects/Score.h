@@ -15,6 +15,7 @@ public:
     Score(QGraphicsItem * parent =0);
     void increase();
     int getScore();
+    void resetScore();
 private:
     int score;
 };

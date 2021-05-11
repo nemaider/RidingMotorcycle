@@ -18,14 +18,18 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
-signals:
+ signals:
     void clicked();
+
+public slots:
+    void RestartGame();
 
 private:
     QGraphicsTextItem* text;
     QString foregroundImg;
     QString backgroundImg;
 };
+
 
 
 #endif //RIDINGMOTORCYCLE_BUTTON_H

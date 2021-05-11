@@ -29,3 +29,7 @@ void Health::increase() {
 int Health::getHealth() {
     return health;
 }
+
+void Health::resetHealth() {
+    this->health = 3;
+}

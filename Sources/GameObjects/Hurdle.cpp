@@ -2,13 +2,14 @@
 // Created by exort on 22.10.2020.
 //
 
+#include <iostream>
 #include "Sources/GameObjects/Hurdle.h"
 #include "Game.h"
-#include "Sources/GameObjects/Player.h"
 
 
 
 extern Game * game;
+
 
 Hurdle::Hurdle(): QObject(), QGraphicsPixmapItem(){
     int random = (rand() % 400)+200;
@@ -31,9 +32,11 @@ Hurdle::Hurdle(): QObject(), QGraphicsPixmapItem(){
         timer->start(20);
     }
 
+
 }
 
 void Hurdle::move() {
+
     QList<QGraphicsItem *> colliding_items = collidingItems();
     int n = colliding_items.size();
     for (int i=0; i < n; ++i){
@@ -51,7 +54,13 @@ void Hurdle::move() {
 
             if (game->health->getHealth() <= 0){
                 game->scene->clear();
+                playAgain = new Button(QString("../Sources/Pictures/Menu/start-inactive.png"),
+                                       QString("../Sources/Pictures/Menu/start-active.png"));
+                playAgain->setPos(500,600);
+                std::cout << playAgain;
+                connect(playAgain,SIGNAL(clicked()), playAgain, SLOT(RestartGame()));
                 game->setBackgroundBrush(QImage("../Sources/Pictures/gameover.png"));
+//                game->scene->addItem(playAgain);
             }
             return;
         }
@@ -67,3 +76,9 @@ void Hurdle::move() {
 
 
 }
+
+//void Hurdle::RestartGame() {
+//    game->start();
+//    delete this;
+//}
+
