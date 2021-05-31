@@ -8,14 +8,15 @@
 #include <QCoreApplication>
 #include <QThread>
 #include <QTime>
+#include <iostream>
 
 
-Game::Game(QWidget * parent){
+Game::Game(){
 
     // scene tools
     scene = new QGraphicsScene();
-    scene->setSceneRect(0,0,1030,768);
-    setBackgroundBrush(QImage("../Sources/Pictures/Menu/background.png"));
+//    scene->setSceneRect(0,0,1030,768);
+//    setBackgroundBrush(QImage("../Sources/Pictures/Menu/background.png"));
 
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -30,7 +31,7 @@ Game::Game(QWidget * parent){
     int byPos = 380;
     playButton->setPos(bxPos, byPos);
     connect(playButton,SIGNAL(clicked()), this, SLOT(start()));
-    scene->addItem(playButton);
+//    scene->addItem(playButton);
 
     scoreButton = new Button(QString("../Sources/Pictures/Menu/scores-inactive.png"),
                              QString("../Sources/Pictures/Menu/scores-active.png"));
@@ -38,7 +39,7 @@ Game::Game(QWidget * parent){
     int syPos = 450;
     scoreButton->setPos(sxPos, syPos);
     connect(scoreButton,SIGNAL(clicked()), this, SLOT(showScores()));
-    scene->addItem(scoreButton);
+//    scene->addItem(scoreButton);
 
     helpButton = new Button(QString("../Sources/Pictures/Menu/help-inactive.png"),
                             QString("../Sources/Pictures/Menu/help-active.png"));
@@ -46,7 +47,7 @@ Game::Game(QWidget * parent){
     int hyPos = 520;
     helpButton->setPos(hxPos, hyPos);
     connect(helpButton,SIGNAL(clicked()), this, SLOT(showHelp()));
-    scene->addItem(helpButton);
+//    scene->addItem(helpButton);
 
 
     quitButton = new Button(QString("../Sources/Pictures/Menu/quit-inactive.png"),
@@ -55,7 +56,7 @@ Game::Game(QWidget * parent){
     int qyPos = 610;
     quitButton->setPos(qxPos, qyPos);
     connect(quitButton,SIGNAL(clicked()), this, SLOT(close()));
-    scene->addItem(quitButton);
+//    scene->addItem(quitButton);
 
     backButton = new Button(QString("../Sources/Pictures/Menu/back-inactive.png"),
                             QString("../Sources/Pictures/Menu/back-active.png"));
@@ -63,7 +64,7 @@ Game::Game(QWidget * parent){
     int backyPos = 610;
     backButton->setPos(backxPos, backyPos);
     connect(backButton,SIGNAL(clicked()), this, SLOT(displayMainMenu()));
-    scene->addItem(backButton);
+//    scene->addItem(backButton);
 
     // text and parchment image
 
@@ -80,17 +81,104 @@ Game::Game(QWidget * parent){
     info = new TextInformation();
     info->setPosition(300,270);
     scene->addItem(info);
-    // game objects
+
+//     game objects
     health = new Health();
     player = new Player();
     score = new Score();
+
+    mainTimer = new QTimer();
+    connect(mainTimer, SIGNAL(timeout()), this, SLOT(mainLoop()));
+
+    backMenuButton = new Button(QString("../Sources/Pictures/Menu/ok-inactive.png"),
+                                QString("../Sources/Pictures/Menu/ok-active.png"));
+    int bmxPos = 320;
+    int bmyPos = 110;
+    backMenuButton->setPos(bmxPos, bmyPos);
+    connect(backMenuButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
+
+    playAgainButton = new Button(QString("../Sources/Pictures/Menu/again-inactive.png"),
+                                 QString("../Sources/Pictures/Menu/again-active.png"));
+    int pxPos = 220;
+    int pyPos = 110;
+    playAgainButton->setPos(pxPos, pyPos);
+    playAgainButton->setSize(200,51);
+    connect(playAgainButton,SIGNAL(clicked()), this, SLOT(start()));
 }
 
 void Game::displayMainMenu() {
+    scene->clear();
+
+    scene->setSceneRect(0,0,1030,768);
+    setFixedSize(1030,768);
+    setBackgroundBrush(QImage("../Sources/Pictures/Menu/background.png"));
+
+    // buttons and properties
+//    playButton = new Button(QString("../Sources/Pictures/Menu/start-inactive.png"),
+//                            QString("../Sources/Pictures/Menu/start-active.png"));
+//    double bxPos = playButton->boundingRect().width()/8 + 3;
+//    double byPos = 380;
+//    playButton->setPos(bxPos, byPos);
+//    connect(playButton,SIGNAL(clicked()), this, SLOT(start()));
+    scene->addItem(playButton);
+
+//    scoreButton = new Button(QString("../Sources/Pictures/Menu/scores-inactive.png"),
+//                             QString("../Sources/Pictures/Menu/scores-active.png"));
+//    double sxPos = scoreButton->boundingRect().width()/8 + 3;
+//    double syPos = 450;
+//    scoreButton->setPos(sxPos, syPos);
+//    connect(scoreButton,SIGNAL(clicked()), this, SLOT(showScores()));
+    scene->addItem(scoreButton);
+
+//    helpButton = new Button(QString("../Sources/Pictures/Menu/help-inactive.png"),
+//                            QString("../Sources/Pictures/Menu/help-active.png"));
+//    double hxPos = helpButton->boundingRect().width()/8 + 3;
+//    double hyPos = 520;
+//    helpButton->setPos(hxPos, hyPos);
+//    connect(helpButton,SIGNAL(clicked()), this, SLOT(showHelp()));
+    scene->addItem(helpButton);
 
 
-    scene->removeItem(backButton);
-    scene->removeItem(info);
+//    quitButton = new Button(QString("../Sources/Pictures/Menu/quit-inactive.png"),
+//                            QString("../Sources/Pictures/Menu/quit-active.png"));
+//    double qxPos = quitButton->boundingRect().width()/8 + 3;
+//    double qyPos = 610;
+//    quitButton->setPos(qxPos, qyPos);
+//    connect(quitButton,SIGNAL(clicked()), this, SLOT(close()));
+    scene->addItem(quitButton);
+
+//    backButton = new Button(QString("../Sources/Pictures/Menu/back-inactive.png"),
+//                            QString("../Sources/Pictures/Menu/back-active.png"));
+//    double backxPos = scene->width()/2 - 40;
+//    double backyPos = 610;
+//    backButton->setPos(backxPos, backyPos);
+//    connect(backButton,SIGNAL(clicked()), this, SLOT(displayMainMenu()));
+    scene->addItem(backButton);
+
+    // text and parchment image
+
+    parchmentImage = new QLabel();
+    QPixmap img("../Sources/Pictures/Menu/paper.png");
+    parchmentImage->setPixmap(img);
+
+
+    int x = img.width();
+    int y = img.height();
+    parchmentImage->setGeometry(300,250,x,y);
+    scene->addWidget(parchmentImage);
+
+    info = new TextInformation();
+    info->setPosition(300,270);
+    scene->addItem(info);
+
+
+    // other no to del
+
+
+    if(backButton->isVisible()) { scene->removeItem(backButton); }
+    if(info->isVisible())       { scene->removeItem(info); }
+
+
     info->setProperties(Qt::black,"arial",16,300,270);
     parchmentImage->setHidden(true);
 
@@ -99,13 +187,11 @@ void Game::displayMainMenu() {
     scoreButton->setEnabled(true);
     helpButton->setEnabled(true);
     quitButton->setEnabled(true);
-
-
 }
 
 
 
-void Game::showHelp() {
+void Game::showHelp() const {
 
     playButton->setEnabled(false);
     scoreButton->setEnabled(false);
@@ -124,7 +210,7 @@ void Game::showHelp() {
 
 }
 
-void Game::showScores() {
+void Game::showScores() const {
 
 
 
@@ -143,7 +229,7 @@ void Game::showScores() {
 
 }
 
-void Game::counting(unsigned long msecs)
+void Game::counting(unsigned long msecs) const
 {
     QTime dieTime;
     info->setProperties(Qt::black,"arial",36,400,180);
@@ -157,7 +243,7 @@ void Game::counting(unsigned long msecs)
 
         scene->addItem(info); // show text
 
-        dieTime= QTime::currentTime().addMSecs(msecs); // calculate how long app may be delayed
+        dieTime= QTime::currentTime().addMSecs((int)msecs); // calculate how long app may be delayed
         while (QTime::currentTime() < dieTime)
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
         scene->removeItem(info); // remove text
@@ -172,12 +258,13 @@ void Game::keyReleaseEvent(QKeyEvent *event) {
     player->keyRelease(event);
 }
 
+
+
 void Game::mainLoop() {
-    if(health->getHealth() >= 0){
+    if(health->getHealth() > 0){
         player->move();
     }
 }
-
 
 
 
@@ -186,22 +273,44 @@ void Game::start() {
     scene->clear();
 
 
+
+//    for (size_t i=0, n= scene->items().size(); i < n; i++ ){
+//        scene->items()[i]->setEnabled(false);
+//        std::cout << n <<"- size" << std::endl;
+//        std::cout << i <<"- iterator" << std::endl;
+//
+//    }
+
+
+
     scene->setSceneRect(0,0,800,600);
     setFixedSize(800,600);
     setBackgroundBrush(QImage("../Sources/Pictures/gameBackground.png"));
+
+    player = new Player();
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
     player->resetPos();
     scene->addItem(player);
 
-
+    score = new Score();
     score->resetScore();
     score->setPos(score->x()+600, score->y()+9);
     scene->addItem(score);
 
+    health = new Health();
     health->resetHealth();
     health->setPos(health->x()+380, health->y()+9);
     scene->addItem(health);
+
+//    if(!mainTimer->isActive()) {
+//        connect(mainTimer, SIGNAL(timeout()), this, SLOT(mainLoop()));
+//        mainTimer->start(0);
+//    }
+
+    if(!mainTimer->isActive()){
+        mainTimer->start(0);
+    }
 
     counting(1000);
 
@@ -212,8 +321,43 @@ void Game::start() {
     auto * timerHeart = new QTimer();
     QObject::connect(timerHeart,SIGNAL(timeout()),player,SLOT(spawnHeart()));
     timerHeart->start(10000);
+}
 
-    auto mainTimer = new QTimer(this);
-    connect(mainTimer, SIGNAL(timeout()),this, SLOT(mainLoop()));
-    mainTimer->start(0);
+void Game::drawPanel(float x, float y, int width, int height, const QColor& color, double opacity) const{
+    // draws a panel at the specified location with the specified properties
+    auto* panel = new QGraphicsRectItem(x,y,width,height);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(color);
+    panel->setBrush(brush);
+    panel->setOpacity(opacity);
+    scene->addItem(panel);
+}
+
+
+void Game::ShowGameOverWindow(int points){
+    setBackgroundBrush(QImage("../Sources/Pictures/gameover.png"));
+    int height = window()->height();
+    int width = window()->width();
+
+    std::cout << "You have got score "<< points <<" points!";
+    drawPanel(0,0,860,600,Qt::black,0.35);
+    drawPanel((float)width/4+30,(float)height/4,400,400,Qt::lightGray,0.75);
+
+//    backMenuButton = new Button(QString("../Sources/Pictures/Menu/ok-inactive.png"),
+//                            QString("../Sources/Pictures/Menu/ok-active.png"));
+    int qxPos = width-320;
+    int qyPos = height-110;
+    backMenuButton->setPos(qxPos, qyPos);
+//    connect(backMenuButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
+    scene->addItem(backMenuButton);
+
+//    playAgainButton = new Button(QString("../Sources/Pictures/Menu/again-inactive.png"),
+//                            QString("../Sources/Pictures/Menu/again-active.png"));
+    int pxPos = width/3-30;
+    int pyPos = height-110;
+    playAgainButton->setPos(pxPos, pyPos);
+    playAgainButton->setSize(200,51);
+//    connect(playAgainButton,SIGNAL(clicked()), this, SLOT(start()));
+    scene->addItem(playAgainButton);
 }

@@ -18,7 +18,7 @@ class Hurdle: public QObject, public QGraphicsPixmapItem{
 public:
     Hurdle();
 
-    Button * playAgain;
+//    Button * playAgain;
 public slots:
     void move();
 //    void RestartGame();

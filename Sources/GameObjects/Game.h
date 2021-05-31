@@ -25,9 +25,9 @@
 class Game: public QGraphicsView{
     Q_OBJECT
 public:
-    Game (QWidget * parent=0);
+    Game();
 
-
+    QTimer * mainTimer;
 
     QGraphicsScene * scene;
     Player * player;
@@ -39,6 +39,8 @@ public:
     Button * helpButton;
     Button * quitButton;
     Button * backButton;
+    Button * backMenuButton;
+    Button * playAgainButton;
 
     QLabel * parchmentImage;
     TextInformation * info;
@@ -46,14 +48,19 @@ public:
 public slots:
     void start();
     void displayMainMenu();
-    void showHelp();
-    void showScores();
+    void showHelp() const;
+    void showScores() const;
     void mainLoop();
 
 public:
-    void counting(unsigned long);
-    void keyPressEvent(QKeyEvent* event);
-    void keyReleaseEvent(QKeyEvent *event);
+    void counting(unsigned long) const;
+    void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
+    void ShowGameOverWindow(int score);
+
+private:
+    void drawPanel(float x, float y, int width, int height, const QColor& color, double opacity) const;
+
 };
 
 

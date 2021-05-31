@@ -18,11 +18,11 @@ public:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
+    void setSize(int width, int height);
+
  signals:
     void clicked();
 
-public slots:
-    void RestartGame();
 
 private:
     QGraphicsTextItem* text;

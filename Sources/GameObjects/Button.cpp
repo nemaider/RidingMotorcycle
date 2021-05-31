@@ -23,6 +23,10 @@ Button::Button(QString graphInactiveFileName, QString graphActiveFileName, QGrap
     setAcceptHoverEvents(true);
 }
 
+void Button::setSize(int width, int height){
+    setRect(0,0,width,height);
+}
+
 void Button::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     emit clicked();
 }
@@ -39,7 +43,4 @@ void Button::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
     setBrush(brush);
 }
 
-void Button::RestartGame() {
-    game->start();
-}
 
