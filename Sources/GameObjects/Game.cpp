@@ -9,6 +9,9 @@
 #include <QThread>
 #include <QTime>
 #include <iostream>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QTextStream>
 
 
 Game::Game(){
@@ -109,6 +112,7 @@ Game::Game(){
 void Game::displayMainMenu() {
     scene->clear();
 
+
     scene->setSceneRect(0,0,1030,768);
     setFixedSize(1030,768);
     setBackgroundBrush(QImage("../Sources/Pictures/Menu/background.png"));
@@ -171,10 +175,6 @@ void Game::displayMainMenu() {
     info->setPosition(300,270);
     scene->addItem(info);
 
-
-    // other no to del
-
-
     if(backButton->isVisible()) { scene->removeItem(backButton); }
     if(info->isVisible())       { scene->removeItem(info); }
 
@@ -210,6 +210,8 @@ void Game::showHelp() const {
 
 }
 
+
+
 void Game::showScores() const {
 
     playButton->setEnabled(false);
@@ -217,8 +219,50 @@ void Game::showScores() const {
     helpButton->setEnabled(false);
     quitButton->setEnabled(false);
 
+    typedef struct {
+        QString points;
+        QString date;
+    } scores;
 
-    info->setText("\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n");
+    QString filename = "score.txt";
+    QFile file(filename);
+
+    scores array[20];
+
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        int i=0;
+
+        QTextStream stream(&file);
+
+        while(!file.atEnd()){
+            QString line = file.readLine();
+            std::string text = line.toStdString();
+            int pos = text.find(",");
+            std::string cutDate = text.substr(pos + 1);
+            cutDate.erase(std::remove(cutDate.begin(), cutDate.end(), '\n'), cutDate.end());
+            std:: string cutScore = text.substr(0, pos);
+            array[i].points = QString::fromStdString(cutScore);
+            array[i].date = QString::fromStdString(cutDate);
+//            array[i].points = test.toInt();
+            i++;
+            std::cout << "points: " << cutScore << std::endl;
+            std::cout <<" i data: " << cutDate << std::endl;
+        }
+    }
+    file.close();
+
+
+    QString text = "Points\tDate\n";
+    for(int i=0; i<10; i++){
+        std::cout << "points: " << array[i].points.toStdString() << std::endl;
+        std::cout <<" i data: " << array[i].date.toStdString() << std::endl;
+        text += (QString) array[i].points;
+        text += "\t";
+        text += (QString) array[i].date;
+        text += "\n";
+    }
+
+    info->setText(text);
 
     parchmentImage->setVisible(true);
     scene->addItem(info);
@@ -319,8 +363,10 @@ void Game::drawPanel(float x, float y, int width, int height, const QColor& colo
     scene->addItem(panel);
 }
 
-
-void Game::ShowGameOverWindow(int points){
+int points;
+void Game::ShowGameOverWindow(){
+    points = score->getScore();
+    scene->clear();
     setBackgroundBrush(QImage("../Sources/Pictures/gameover.png"));
     int height = window()->height();
     int width = window()->width();
@@ -329,8 +375,12 @@ void Game::ShowGameOverWindow(int points){
     drawPanel(0,0,860,600,Qt::black,0.35);
     drawPanel((float)width/4+30,(float)height/4,400,400,Qt::lightGray,0.75);
 
-    backMenuButton = new Button(QString("../Sources/Pictures/Menu/ok-inactive.png"),
-                            QString("../Sources/Pictures/Menu/ok-active.png"));
+
+
+
+
+    backMenuButton = new Button(QString("../Sources/Pictures/Menu/back-inactive.png"),
+                            QString("../Sources/Pictures/Menu/back-active.png"));
     int qxPos = width-320;
     int qyPos = height-110;
     backMenuButton->setPos(qxPos, qyPos);
@@ -345,4 +395,41 @@ void Game::ShowGameOverWindow(int points){
     playAgainButton->setSize(200,51);
     connect(playAgainButton,SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(playAgainButton);
+
+
+
+    auto * pointsInfo = new TextInformation();
+    pointsInfo->setProperties(Qt::black, "arial", 14, pxPos-5, height/4+20);
+    pointsInfo->setText(QString("\t          Congratulations!\n\t    You have scored %1 points\nIf you want to save your score enter your name").arg(points));
+    scene->addItem(pointsInfo);
+
+
+    QLineEdit * nicknameField = new QLineEdit();
+    nicknameField->setPlaceholderText("Enter your nickname");
+    nicknameField->setGeometry(pxPos,260,200,30);
+    nicknameField->setFocus();
+    scene->addWidget(nicknameField);
+
+
+    Button * submit = new Button(QString("../Sources/Pictures/Menu/ok-inactive.png"),
+                                 QString("../Sources/Pictures/Menu/ok-active.png"));
+    submit->setPos(pxPos+220, 260);
+    submit->setSize(77,55);
+    connect(submit,SIGNAL(clicked()), this, SLOT(saveScore()));
+    scene->addItem(submit);
+
+}
+
+void Game::saveScore(){
+    QString filename = "score.txt";
+    QFile file(filename);
+
+    QDateTime local(QDateTime::currentDateTime());
+
+    if(file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)){
+        QTextStream stream(&file);
+        stream <<points<<","<<local.time().toString()<<Qt::endl;
+    }
+
+    file.close();
 }

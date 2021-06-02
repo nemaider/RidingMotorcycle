@@ -11,6 +11,7 @@
 extern Game * game;
 
 
+
 Hurdle::Hurdle(): QObject(), QGraphicsPixmapItem(){
     int random = (rand() % 400)+200;
     setPos(random,80);
@@ -55,23 +56,11 @@ void Hurdle::move() {
             // check health value to eventually end the game;
 
             if (game->health->getHealth() <= 0){
-                int score = game->score->getScore();
-
                 game->mainTimer->stop();
-                game->scene->clear();
-                game->ShowGameOverWindow(score);
-
-//                playAgain = new Button(QString("../Sources/Pictures/Menu/start-inactive.png"),
-//                                       QString("../Sources/Pictures/Menu/start-active.png"));
-//                playAgain->setPos(500,600);
-//                std::cout << playAgain;
-//                connect(playAgain,SIGNAL(clicked()), playAgain, SLOT(RestartGame()));
-//                game->setBackgroundBrush(QImage("../Sources/Pictures/gameover.png"));
-//                game->start();
-
-//                game->scene->addItem(playAgain);
+//                game->scene->clear();
+                game->player->clearFocus();
+                game->ShowGameOverWindow();
             }
-
 
             return;
         }

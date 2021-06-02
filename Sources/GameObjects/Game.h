@@ -51,12 +51,14 @@ public slots:
     void showHelp() const;
     void showScores() const;
     void mainLoop();
+    void saveScore();
+
 
 public:
     void counting(unsigned long) const;
     void keyPressEvent(QKeyEvent* event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
-    void ShowGameOverWindow(int score);
+    void ShowGameOverWindow();
 
 private:
     void drawPanel(float x, float y, int width, int height, const QColor& color, double opacity) const;
