@@ -62,7 +62,6 @@ public:
 
 private:
     void drawPanel(float x, float y, int width, int height, const QColor& color, double opacity) const;
-
 };
 
 

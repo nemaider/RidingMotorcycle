@@ -16,58 +16,13 @@
 
 Game::Game(){
 
-    // scene tools
+    // scene properties
     scene = new QGraphicsScene();
-//    scene->setSceneRect(0,0,1030,768);
-//    setBackgroundBrush(QImage("../Sources/Pictures/Menu/background.png"));
-
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(1030,768);
 
-
-    // buttons and properties
-//    playButton = new Button(QString("../Sources/Pictures/Menu/start-inactive.png"),
-//                            QString("../Sources/Pictures/Menu/start-active.png"));
-//    int bxPos = playButton->boundingRect().width()/8 + 3;
-//    int byPos = 380;
-//    playButton->setPos(bxPos, byPos);
-//    connect(playButton,SIGNAL(clicked()), this, SLOT(start()));
-//    scene->addItem(playButton);
-
-//    scoreButton = new Button(QString("../Sources/Pictures/Menu/scores-inactive.png"),
-//                             QString("../Sources/Pictures/Menu/scores-active.png"));
-//    int sxPos = scoreButton->boundingRect().width()/8 + 3;
-//    int syPos = 450;
-//    scoreButton->setPos(sxPos, syPos);
-//    connect(scoreButton,SIGNAL(clicked()), this, SLOT(showScores()));
-//    scene->addItem(scoreButton);
-
-//    helpButton = new Button(QString("../Sources/Pictures/Menu/help-inactive.png"),
-//                            QString("../Sources/Pictures/Menu/help-active.png"));
-//    int hxPos = helpButton->boundingRect().width()/8 + 3;
-//    int hyPos = 520;
-//    helpButton->setPos(hxPos, hyPos);
-//    connect(helpButton,SIGNAL(clicked()), this, SLOT(showHelp()));
-//    scene->addItem(helpButton);
-
-
-//    quitButton = new Button(QString("../Sources/Pictures/Menu/quit-inactive.png"),
-//                            QString("../Sources/Pictures/Menu/quit-active.png"));
-//    int qxPos = quitButton->boundingRect().width()/8 + 3;
-//    int qyPos = 610;
-//    quitButton->setPos(qxPos, qyPos);
-//    connect(quitButton,SIGNAL(clicked()), this, SLOT(close()));
-//    scene->addItem(quitButton);
-
-//    backButton = new Button(QString("../Sources/Pictures/Menu/back-inactive.png"),
-//                            QString("../Sources/Pictures/Menu/back-active.png"));
-//    int backxPos = scene->width()/2 - 40;
-//    int backyPos = 610;
-//    backButton->setPos(backxPos, backyPos);
-//    connect(backButton,SIGNAL(clicked()), this, SLOT(displayMainMenu()));
-//    scene->addItem(backButton);
 
     // text and parchment image
 
@@ -81,32 +36,11 @@ Game::Game(){
     parchmentImage->setGeometry(300,250,x,y);
     scene->addWidget(parchmentImage);
 
-    info = new TextInformation();
-    info->setPosition(300,270);
-    scene->addItem(info);
-
 //     game objects
     health = new Health();
     player = new Player();
     score = new Score();
-
     mainTimer = new QTimer();
-//    connect(mainTimer, SIGNAL(timeout()), this, SLOT(mainLoop()));
-
-//    backMenuButton = new Button(QString("../Sources/Pictures/Menu/ok-inactive.png"),
-//                                QString("../Sources/Pictures/Menu/ok-active.png"));
-//    int bmxPos = 320;
-//    int bmyPos = 110;
-//    backMenuButton->setPos(bmxPos, bmyPos);
-//    connect(backMenuButton, SIGNAL(clicked()), this, SLOT(displayMainMenu()));
-//
-//    playAgainButton = new Button(QString("../Sources/Pictures/Menu/again-inactive.png"),
-//                                 QString("../Sources/Pictures/Menu/again-active.png"));
-//    int pxPos = 220;
-//    int pyPos = 110;
-//    playAgainButton->setPos(pxPos, pyPos);
-//    playAgainButton->setSize(200,51);
-//    connect(playAgainButton,SIGNAL(clicked()), this, SLOT(start()));
 }
 
 void Game::displayMainMenu() {
@@ -211,6 +145,30 @@ void Game::showHelp() const {
 }
 
 
+struct scores{
+    QString points;
+    QString date;
+    int rank;
+};
+
+bool compareTwoPlayers(struct scores a, struct scores b){
+    //if scored points aren't same then return true for higher points value
+    if(a.points != b.points)
+        return a.points > b.points;
+
+    //if date that player scored his points aren't same, return true for lower date
+    return (a.date < b.date);
+
+}
+
+void compareScores(scores a[], int n){
+    std::sort(a, a+n, compareTwoPlayers);
+
+    for(int i=0; i<n; i++){
+        a[i].rank = i+1;
+    }
+}
+
 
 void Game::showScores() const {
 
@@ -219,22 +177,20 @@ void Game::showScores() const {
     helpButton->setEnabled(false);
     quitButton->setEnabled(false);
 
-    typedef struct {
-        QString points;
-        QString date;
-    } scores;
+
 
     QString filename = "score.txt";
     QFile file(filename);
 
-    scores array[20];
+    int size=20;
+    scores array[size];
 
     if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
         int i=0;
 
         QTextStream stream(&file);
 
-        while(!file.atEnd()){
+        while(!file.atEnd() || i==9){
             QString line = file.readLine();
             std::string text = line.toStdString();
             int pos = text.find(",");
@@ -251,11 +207,17 @@ void Game::showScores() const {
     }
     file.close();
 
+    compareScores(array, size);
 
-    QString text = "Points\tDate\n";
+
+    QString text = "Rank\tPoints\tDate\n";
     for(int i=0; i<10; i++){
+        if(array[i].points == "") break;
+        std::cout << "rank: " << array[i].rank << std::endl;
         std::cout << "points: " << array[i].points.toStdString() << std::endl;
         std::cout <<" i data: " << array[i].date.toStdString() << std::endl;
+        text += QString::number(array[i].rank);
+        text += "\t";
         text += (QString) array[i].points;
         text += "\t";
         text += (QString) array[i].date;
