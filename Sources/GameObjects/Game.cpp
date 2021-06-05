@@ -15,7 +15,6 @@
 
 
 Game::Game(){
-
     // scene properties
     scene = new QGraphicsScene();
     setScene(scene);
@@ -153,12 +152,11 @@ struct scores{
 
 bool compareTwoPlayers(struct scores a, struct scores b){
     //if scored points aren't same then return true for higher points value
-    if(a.points != b.points)
-        return a.points > b.points;
+    if(a.points.toInt() != b.points.toInt())
+        return a.points.toInt() > b.points.toInt();
 
     //if date that player scored his points aren't same, return true for lower date
     return (a.date < b.date);
-
 }
 
 void compareScores(scores a[], int n){
@@ -196,13 +194,11 @@ void Game::showScores() const {
             int pos = text.find(",");
             std::string cutDate = text.substr(pos + 1);
             cutDate.erase(std::remove(cutDate.begin(), cutDate.end(), '\n'), cutDate.end());
-            std:: string cutScore = text.substr(0, pos);
+            std::string cutScore = text.substr(0, pos);
             array[i].points = QString::fromStdString(cutScore);
             array[i].date = QString::fromStdString(cutDate);
-//            array[i].points = test.toInt();
             i++;
-            std::cout << "points: " << cutScore << std::endl;
-            std::cout <<" i data: " << cutDate << std::endl;
+
         }
     }
     file.close();
@@ -213,9 +209,6 @@ void Game::showScores() const {
     QString text = "Rank\tPoints\tDate\n";
     for(int i=0; i<10; i++){
         if(array[i].points == "") break;
-        std::cout << "rank: " << array[i].rank << std::endl;
-        std::cout << "points: " << array[i].points.toStdString() << std::endl;
-        std::cout <<" i data: " << array[i].date.toStdString() << std::endl;
         text += QString::number(array[i].rank);
         text += "\t";
         text += (QString) array[i].points;
@@ -239,7 +232,7 @@ void Game::counting(unsigned long msecs) const
     info->setProperties(Qt::black,"arial",36,400,180);
 
     for(int i=3; i>=0; i--){
-        if(i==0) { // set right text
+        if(i==0) {
             info->setText("START!!!");
             info->setPosition(340,180);
         } else
@@ -337,10 +330,6 @@ void Game::ShowGameOverWindow(){
     drawPanel(0,0,860,600,Qt::black,0.35);
     drawPanel((float)width/4+30,(float)height/4,400,400,Qt::lightGray,0.75);
 
-
-
-
-
     backMenuButton = new Button(QString("../Sources/Pictures/Menu/back-inactive.png"),
                             QString("../Sources/Pictures/Menu/back-active.png"));
     int qxPos = width-320;
@@ -358,19 +347,17 @@ void Game::ShowGameOverWindow(){
     connect(playAgainButton,SIGNAL(clicked()), this, SLOT(start()));
     scene->addItem(playAgainButton);
 
-
-
     auto * pointsInfo = new TextInformation();
     pointsInfo->setProperties(Qt::black, "arial", 14, pxPos-5, height/4+20);
-    pointsInfo->setText(QString("\t          Congratulations!\n\t    You have scored %1 points\nIf you want to save your score enter your name").arg(points));
+    pointsInfo->setText(QString("\t          Congratulations!\n\t    You have scored %1 points\nIf you want to save your score click button below").arg(points));
     scene->addItem(pointsInfo);
 
 
-    QLineEdit * nicknameField = new QLineEdit();
-    nicknameField->setPlaceholderText("Enter your nickname");
-    nicknameField->setGeometry(pxPos,260,200,30);
-    nicknameField->setFocus();
-    scene->addWidget(nicknameField);
+//    QLineEdit * nicknameField = new QLineEdit();
+//    nicknameField->setPlaceholderText("Enter your nickname");
+//    nicknameField->setGeometry(pxPos,260,200,30);
+//    nicknameField->setFocus();
+//    scene->addWidget(nicknameField);
 
 
     Button * submit = new Button(QString("../Sources/Pictures/Menu/ok-inactive.png"),

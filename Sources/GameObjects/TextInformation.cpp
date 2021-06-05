@@ -12,8 +12,6 @@ TextInformation::TextInformation() : QGraphicsTextItem() {
     setFont(QFont("arial",16));
 }
 
-
-
 void TextInformation::setText(QString text) {
     setPlainText(text);
 }

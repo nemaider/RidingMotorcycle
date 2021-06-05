@@ -5,9 +5,6 @@
 #include "Heart.h"
 #include "Game.h"
 
-
-
-
 extern Game * game;
 
 Heart::Heart(): QObject(), QGraphicsPixmapItem(){

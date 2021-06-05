@@ -4,12 +4,8 @@
 
 #include "Health.h"
 
-
-
-
 Health::Health(QGraphicsItem *parent) : QGraphicsTextItem(parent) {
     health = 3;
-
     setPlainText(QString::number(health));
     setDefaultTextColor(Qt::red);
     setFont(QFont("times",36));

@@ -22,10 +22,7 @@ public:
 
  signals:
     void clicked();
-
-
 private:
-    QGraphicsTextItem* text;
     QString foregroundImg;
     QString backgroundImg;
 };

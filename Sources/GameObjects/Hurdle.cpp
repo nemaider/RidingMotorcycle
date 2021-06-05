@@ -57,7 +57,6 @@ void Hurdle::move() {
 
             if (game->health->getHealth() <= 0){
                 game->mainTimer->stop();
-//                game->scene->clear();
                 game->player->clearFocus();
                 game->ShowGameOverWindow();
             }
@@ -76,9 +75,4 @@ void Hurdle::move() {
 
 
 }
-
-//void Hurdle::RestartGame() {
-//    game->start();
-//    delete this;
-//}
 

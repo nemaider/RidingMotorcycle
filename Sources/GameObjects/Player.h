@@ -14,7 +14,6 @@ class Player: public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 public:
     Player();
-//    void keyPressEvent(QKeyEvent * event);
     void resetPos();
 
 

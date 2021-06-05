@@ -38,18 +38,18 @@ void Player::resetPos(){
 }
 
 void Player::keyReact(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Left)
+    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
         rotateLeft = true;
     }
-    else if (event->key() == Qt::Key_Right)
+    else if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
         rotateRight = true;
     }
-    else if (event->key() == Qt::Key_Up)
+    else if (event->key() == Qt::Key_Up  || event->key() == Qt::Key_W)
     {
         thrust = true;
-    } else if (event->key() == Qt::Key_Down)
+    } else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_S)
     {
         braking = true;
     }
@@ -57,19 +57,19 @@ void Player::keyReact(QKeyEvent *event) {
 }
 
 void Player::keyRelease(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Left)
+    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
         rotateLeft = false;
     }
-    else if (event->key() == Qt::Key_Right)
+    else if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
         rotateRight = false;
     }
-    else if (event->key() == Qt::Key_Up)
+    else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W)
     {
         thrust = false;
     }
-    else if (event->key() == Qt::Key_Down)
+    else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_S)
     {
         braking = false;
     }
@@ -161,27 +161,6 @@ void Player::calculateAngle()
 
     setRotation(angle);
 }
-
-
-//void Player::keyPressEvent(QKeyEvent *event) {
-//    if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A){
-//        if(pos().x() > 180)
-//            setPos(x()-10,y());
-//    } else if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D ){
-//        if(pos().x() < 620)
-//            setPos(x()+10,y());
-//    } else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W ){
-//        if(pos().y() > 0) // 80
-//            setPos(x(),y()-10);
-//    } else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_S ){
-//        if(pos().y() < 500)
-//            setPos(x(),y()+10);
-//    } else if (event->key() == Qt::Key_Space){
-//        if(pos().y() > 0) // 80
-//            setPos(x(),y()-20);
-//    }
-//
-//}
 
 
 
